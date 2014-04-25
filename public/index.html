@@ -1,0 +1,192 @@
+<!doctype html>
+
+<!-- ASSIGN OUR ANGULAR MODULE -->
+<html ng-app="scotchTodo">
+<head>
+	<!-- META -->
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1"><!-- Optimize mobile viewport -->
+
+	<title>Node/Angular Todo App</title>
+
+	<!-- SCROLLS -->
+	<link rel="stylesheet" href="/bootstrap/dist/css/bootstrap.css" type="text/css" media="screen"><!-- load bootstrap -->
+	<style>
+		html 					{ overflow-y:scroll; }
+		body 					{ padding-top:50px; }
+		#todo-list 				{ margin-bottom:30px; }
+		#todo-form 	 			{ margin-bottom:50px; }
+
+		.bs-example {
+			    background-color: #FFFFFF;
+			    border-color: #DDDDDD;
+			    border-radius: 4px 4px 0 0;
+			    border-width: 1px;
+			    box-shadow: none;
+			    margin-left: 0;
+			    margin-right: 0;
+			}
+
+		.highlight {
+			    background-color: #F7F7F9;
+			    border: 1px solid #E1E1E8;
+			    border-radius: 4px 4px 4px 4px;
+			    margin-bottom: 14px;
+			    padding: 9px 14px;
+			}
+
+		.v-center {
+			    display: inline-block;
+			    vertical-align: middle;
+			    float: none;
+			}
+		
+		.v-top {
+			    display: inline-block;
+			    vertical-align: top;
+			    float: none;
+			}
+
+		.space {
+			    margin-top: 10px;
+			    margin-bottom: 10px;
+			}
+			
+// this goes into a css file loaded after the compiled bootstrap.min.css
+		    .my-inner {
+			    padding-top: 10px;
+			    padding-bottom: 10px;
+			    background-color: #eee;
+			    border: 1px solid #ddd;
+			  }
+	
+	.table-no-border>thead>tr>th, 
+	.table-no-border>tbody>tr>th, 
+	.table-no-border>tfoot>tr>th, 
+	.table-no-border>thead>tr>td, 
+	.table-no-border>tbody>tr>td, 
+	.table-no-border>tfoot>tr>td {
+		  border-top: none; 
+		  }
+
+	</style>
+<!--			    margin: 10px;
+			    background-color: #eee;
+			    border: 1px solid #ddd;
+			    background-color: rgba(86,61,124,.15);
+			    border: 1px solid rgba(86,61,124,.2);
+-->
+
+	<!-- SPELLS -->
+	<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script><!-- load jquery -->
+	<script src="//ajax.googleapis.com/ajax/libs/angularjs/1.0.8/angular.min.js"></script><!-- load angular -->
+	<script src="core.js"></script>
+
+</head>
+
+<body ng-controller="mainController">
+	<div class="container">
+
+		<div id="todo-list" class="row">
+			<div class="col-md-6">
+				<div class="highlight">
+					<div class="row">
+						<div class="col-md-9 v-center">
+						<input type="text" class="form-control input-sm text-center" placeholder="Enter new node" ng-model="formNode.text">
+						</div>
+
+						<div class="col-md-2 v-center">
+						<button type="submit" class="btn btn-default btn-xs v-center" ng-click="createNode()">Add</button>
+						</div>
+					</div>
+
+					<div class="checkbox" ng-repeat="node in nodes">
+						<label>
+							<input type="checkbox" ng-click="deleteNode(node._id)"> {{ node.text }}
+						</label>
+					</div>
+				</div>
+			</div>
+			<div class="col-md-6">
+				<div class="highlight">
+					<div class="row">
+						<div class="col-md-9 v-center">
+						<input type="text" class="form-control input-sm text-center" placeholder="Enter new edge description" ng-model="formED.text">
+						</div>
+
+						<div class="col-md-2 v-center">
+						<button type="submit" class="btn btn-default btn-xs v-center" ng-click="createED()">Add</button>
+						</div>
+					</div>
+
+					<div class="checkbox" ng-repeat="ed in edgedesc">
+						<label>
+							<input type="checkbox" ng-click="deleteED(ed._id)"> {{ ed.text }}
+						</label>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div class="row">
+			<div class="col-md-12">
+				<div class="highlight">
+				
+				<table class="table-no-border table-condensed table-striped">
+
+				<tbody>
+				<tr>
+				<td class="col-sm-3 v-top">
+				<p>New connection between </p>
+				<button type="submit" class="btn btn-default btn-xs v-center" ng-click="createEdge()">Add</button>
+				</td>
+				
+				<td class="col-sm-10">
+				<select 
+				   ng-model="newconnobj.selectedNodeOrigin" 
+		      		   ng-options="n.text for n in nodes">
+				 </select>
+				and
+				<select 
+				   ng-model="newconnobj.selectedNodeTarget" 
+		      		   ng-options="n.text for n in nodes">
+				 </select>
+				of type
+				<select 
+				   ng-model="newconnobj.selectedED" 
+		      		   ng-options="ed.text for ed in edgedesc">
+			 	</select>
+				<input type="text" class="form-control input-sm text-center space" placeholder="Freetext description" ng-model="newconnobj.text">
+				</tr>
+				</td>
+				</tr>
+				</tbody>
+				</table>
+				
+					<div class="checkbox" ng-repeat="e in edges">
+						<label>
+							<input type="checkbox" ng-click="deleteEdge(e._id)"> {{ e.text }}
+						</label>
+					</div>
+					
+					</div>
+			<div>
+				      <p>Selected origin: {{newconnobj.selectedNodeOrigin.text}}, {{newconnobj.selectedNodeOrigin._id}} </p>
+				      <p>Selected target: {{newconnobj.selectedNodeTarget.text}}, {{newconnobj.selectedNodeTarget._id}} </p>
+				      <p>Selected edge description: {{newconnobj.selectedED.text}}, {{newconnobj.selectedED._id}} </p>
+				      <p>Freetext: {{newconnobj.text}} </p>
+				</div>
+					
+					
+			</div>
+		</div>
+
+		<div class="text-center text-muted">
+			<p>A demo by <a href="http://scotch.io">Scotch</a>.</p>
+			<p>Read the <a href="http://scotch.io/tutorials/javascript/creating-a-single-page-todo-app-with-node-and-angular">tutorial</a>.</p>
+		</div>
+
+	</div>
+
+</body>
+</html>
