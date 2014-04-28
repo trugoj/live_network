@@ -1,7 +1,7 @@
 <!doctype html>
 
 <!-- ASSIGN OUR ANGULAR MODULE -->
-<html ng-app="myApp">
+<html>
 <head>
 	<!-- META -->
 	<meta charset="utf-8">
@@ -113,7 +113,7 @@
 
 </head>
 
-<body ng-controller="mainController">
+<body ng-app="myApp" ng-init="info={}" ng-controller="mainController">
 	<div class="container">
 
 		<div class="row">
@@ -126,7 +126,7 @@
 					<donut-chart data="[2, 5, 9]"></donut-chart>
 					-->
 
-					<cluster class="h-center" data="{nodes: [a, b, c], links: [{}]}"></cluster>
+					<cluster class="h-center" data="info"></cluster>
 					</div>
 				</div>
 			</div>
@@ -145,7 +145,7 @@
 						</div>
 					</div>
 
-					<div class="checkbox" ng-repeat="node in nodes">
+					<div class="checkbox" ng-repeat="node in info.nodes">
 						<label>
 							<input type="checkbox" ng-click="deleteNode(node._id)"> {{ node.text }}
 						</label>
@@ -164,7 +164,7 @@
 						</div>
 					</div>
 
-					<div class="checkbox" ng-repeat="ed in edgedesc">
+					<div class="checkbox" ng-repeat="ed in info.edgedesc">
 						<label>
 							<input type="checkbox" ng-click="deleteED(ed._id)"> {{ ed.text }}
 						</label>
@@ -188,27 +188,27 @@
 				
 				<td class="col-sm-10">
 				<select 
-				   ng-model="newconnobj.selectedNodeOrigin" 
-		      		   ng-options="n.text for n in nodes">
+				   ng-model="info.newconnobj.selectedNodeOrigin"
+		      		   ng-options="n.text for n in info.nodes">
 				 </select>
 				and
 				<select 
-				   ng-model="newconnobj.selectedNodeTarget" 
-		      		   ng-options="n.text for n in nodes">
+				   ng-model="info.newconnobj.selectedNodeTarget"
+		      		   ng-options="n.text for n in info.nodes">
 				 </select>
 				of type
 				<select 
-				   ng-model="newconnobj.selectedED" 
-		      		   ng-options="ed.text for ed in edgedesc">
+				   ng-model="info.newconnobj.selectedED"
+		      		   ng-options="ed.text for ed in info.edgedesc">
 			 	</select>
-				<input type="text" class="form-control input-sm text-center space" placeholder="Freetext description" ng-model="newconnobj.text">
+				<input type="text" class="form-control input-sm text-center space" placeholder="Freetext description" ng-model="info.newconnobj.text">
 				</tr>
 				</td>
 				</tr>
 				</tbody>
 				</table>
 				
-					<div class="checkbox" ng-repeat="e in edges">
+					<div class="checkbox" ng-repeat="e in info.edges">
 						<label>
 							<input type="checkbox" ng-click="deleteEdge(e._id)"> {{ e.text }}
 						</label>
@@ -216,10 +216,10 @@
 					
 					</div>
 			<div>
-				      <p>Selected origin: {{newconnobj.selectedNodeOrigin.text}}, {{newconnobj.selectedNodeOrigin._id}} </p>
-				      <p>Selected target: {{newconnobj.selectedNodeTarget.text}}, {{newconnobj.selectedNodeTarget._id}} </p>
-				      <p>Selected edge description: {{newconnobj.selectedED.text}}, {{newconnobj.selectedED._id}} </p>
-				      <p>Freetext: {{newconnobj.text}} </p>
+				      <p>Selected origin: {{info.newconnobj.selectedNodeOrigin.text}}, {{info.newconnobj.selectedNodeOrigin._id}} </p>
+				      <p>Selected target: {{info.newconnobj.selectedNodeTarget.text}}, {{info.newconnobj.selectedNodeTarget._id}} </p>
+				      <p>Selected edge description: {{info.newconnobj.selectedED.text}}, {{info.newconnobj.selectedED._id}} </p>
+				      <p>Freetext: {{info.newconnobj.text}} </p>
 				</div>
 					
 					
