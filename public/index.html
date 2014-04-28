@@ -41,6 +41,11 @@
 			    float: none;
 			}
 		
+		.h-center {
+			    margin-left: auto;
+			    margin-right: auto;
+			}
+
 		.v-top {
 			    display: inline-block;
 			    vertical-align: top;
@@ -112,13 +117,17 @@
 	<div class="container">
 
 		<div class="row">
-			<div class="col-md-12">
-				<div class="highlight" id="svg-here">
+			<div class="col-md-offset-2 col-md-8">
+				<div class="highlight">
+					<div class="h-center" id="svg-here">
+					<!--
 					<hello-world></hello-world>
 					<donut-chart data="[8, 3, 7]"></donut-chart>
 					<donut-chart data="[2, 5, 9]"></donut-chart>
+					-->
 
-					<cluster data="{nodes: [a, b, c], links: [{}]}"></cluster>
+					<cluster class="h-center" data="{nodes: [a, b, c], links: [{}]}"></cluster>
+					</div>
 				</div>
 			</div>
 		</div>
